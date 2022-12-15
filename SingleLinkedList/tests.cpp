@@ -122,6 +122,46 @@ int main() {
   deleteMany.deleteAllOccurancesOfValue(1);
   std::cout << "size after delete: " << deleteMany.getSize() << std::endl;
   deleteMany.print();
+  std::cout << "******test insert sorted******************\n";
+  SingleLinkedList<int> testSort{};
+  testSort.insertSorted(10);
+  testSort.insertSorted(100);
+  testSort.insertSorted(22);
+  testSort.insertSorted(50);
+  testSort.insertSorted(110);
+  testSort.insertSorted(1);
+  testSort.insertFront(12121);
+  testSort.insertEnd(565);
 
+  testSort.print();
+
+  std::cout << "size: " << testSort.getSize() << std::endl;
+
+  std::cout << "**************test delete even****************\n";
+  SingleLinkedList<int> toDeleteEven{1, 2, 5, 8, 9};
+
+  std::cout << "size before: " << toDeleteEven.getSize() << std::endl;
+  toDeleteEven.print();
+  toDeleteEven.deleteEvenPositions();
+  std::cout << "size after: " << toDeleteEven.getSize() << std::endl;
+  toDeleteEven.print();
+
+  std::cout << "**************test swap******************\n";
+  SingleLinkedList<int> toSwap{1, 2, 3, 4};
+  toSwap.swapPairs();
+  toSwap.print();
+  std::cout << "*************test reverse*******************\n";
+  SingleLinkedList<char> toReverse{'d', 'c', 'g', 'f', 'y'};
+
+  SingleLinkedList<char> *newList = toReverse.reverse();
+  newList->insertEnd('f');
+  newList->print();
+
+  SingleLinkedList<char> toReverse2{'d', 'c', 'g', 'f', 'y'};
+  std::cout << "before reversing nodes....\n";
+  toReverse2.print();
+  std::cout << "after reversing nodes....\n";
+  toReverse2.reverseNodes();
+  toReverse2.print();
   return 0;
 }

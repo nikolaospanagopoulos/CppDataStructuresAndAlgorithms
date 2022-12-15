@@ -186,6 +186,95 @@ public:
     }
     return true;
   }
+  void insertSorted(T val) {
+    if (!head || val <= head->data) {
+      insertFront(val);
+      return;
+    }
+    if (val >= tail->data) {
+      insertEnd(val);
+      return;
+    }
+    Node<T> *newNode = new Node<T>{val};
+    Node<T> *current = head->next;
+    Node<T> *prev = head;
+    while (current) {
+
+      if (val <= current->data) {
+        prev->next = newNode;
+        newNode->next = current;
+        size++;
+        return;
+      }
+      prev = current;
+      current = current->next;
+    }
+  }
+  void deleteEvenPositions() {
+    if (size == 0 || size == 1) {
+      return;
+    }
+    Node<T> *current = head;
+    Node<T> *prev = nullptr;
+    size_t tempIndex = 0;
+
+    while (current) {
+
+      if (tempIndex % 2 != 0) {
+        deleteNext(prev);
+        current = prev->next;
+
+      } else {
+        prev = current;
+        current = current->next;
+      }
+
+      tempIndex++;
+    }
+  }
+
+  void reverseNodes() {
+    if (size <= 1) {
+      return;
+    }
+    tail = head;
+    Node<T> *prev = head;
+    head = head->next;
+    while (head) {
+      Node<T> *next = head->next;
+      head->next = prev;
+      prev = head;
+      head = next;
+    }
+    head = prev;
+    tail->next = nullptr;
+  }
+
+  SingleLinkedList<T> *reverse() {
+    Node<T> *curr = head;
+    Node<T> *last = getNth(size - 1);
+    SingleLinkedList<T> *newList = new SingleLinkedList<T>{};
+    while (curr) {
+      newList->insertFront(curr->data);
+
+      curr = curr->next;
+    }
+    return newList;
+  }
+  void swapPairs() {
+    Node<T> *curr = head;
+    Node<T> *prev = nullptr;
+    size_t tempIndex{};
+    while (curr) {
+      if (tempIndex % 2 != 0 && prev) {
+        std::swap(prev->data, curr->data);
+      }
+      prev = curr;
+      curr = curr->next;
+      tempIndex++;
+    }
+  }
+
   void deleteBack() {
     if (size == 1) {
       deleteFront();
