@@ -342,6 +342,70 @@ public:
     }
     return nullptr;
   }
+  void removeLastOccurance(T val) {
+
+    Node<T> *cur = head;
+    Node<T> *prev = nullptr;
+    Node<T> *toDeleteNext = nullptr;
+
+    bool found = false;
+    while (cur) {
+
+      if (cur->data == val) {
+        found = true;
+        toDeleteNext = prev;
+      }
+
+      prev = cur;
+      cur = cur->next;
+    }
+    if (found) {
+      if (toDeleteNext) {
+        deleteNext(toDeleteNext);
+        return;
+      }
+      deleteFront();
+    }
+  }
+  Node<T> *moveToEnd(Node<T> *cur, Node<T> *prev) {
+    Node<T> *next = cur->next;
+    tail->next = cur;
+    if (prev) {
+      prev->next = next;
+    } else {
+      head = next;
+    }
+    tail = cur;
+    tail->next = nullptr;
+    return next;
+  }
+  void moveKeyToEnd(T val) {
+    if (size <= 1) {
+      return;
+    }
+    size_t length = size;
+    Node<T> *cur = head;
+    Node<T> *prev = nullptr;
+    while (cur && length > 0) {
+
+      if (cur->data == val) {
+        cur = moveToEnd(cur, prev);
+      } else {
+        prev = cur;
+        cur = cur->next;
+      }
+      length--;
+    }
+  }
+  T max(Node<T> *head = nullptr, bool firstCall = true) {
+    if (firstCall) {
+      return this->max(this->head, false);
+    }
+    if (head == nullptr) {
+      return INT16_MIN;
+    }
+    return std::max(head->data, this->max(head->next, false));
+  }
   void swapTailHead() {
     Node<T> *cur = head;
 

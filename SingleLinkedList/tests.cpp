@@ -167,5 +167,21 @@ int main() {
   SingleLinkedList<int> toRotate{3, 5, 1, 2};
   toRotate.swapTailHead();
   toRotate.print();
+  std::cout << "****************remove last occurance test*************\n";
+  SingleLinkedList<int> toRemoveLastOccurance{1, 2, 0, 1, 0};
+  std::cout << "size before: " << toRemoveLastOccurance.getSize() << std::endl;
+  toRemoveLastOccurance.removeLastOccurance(1);
+  std::cout << "size after: " << toRemoveLastOccurance.getSize() << std::endl;
+  toRemoveLastOccurance.print();
+  std::cout << "*******************test move to end******************\n";
+  SingleLinkedList<int> toMoveToEnd{1, 2, 1, 1, 1, 10};
+  std::cout << "print before \n";
+  toMoveToEnd.print();
+  std::cout << "print after \n";
+  toMoveToEnd.moveKeyToEnd(1);
+  toMoveToEnd.print();
+  std::cout << "**********************find max************************\n";
+  SingleLinkedList<int> findMax{1, 4, 8, 9, 50, 5000};
+  std::cout << "max value is: " << findMax.max() << std::endl;
   return 0;
 }
