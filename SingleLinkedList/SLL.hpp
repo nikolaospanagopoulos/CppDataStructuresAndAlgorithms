@@ -328,6 +328,45 @@ public:
       deleteFront();
     }
   }
+  Node<T> *getPrv(const Node<T> *node) const {
+    Node<T> *cur = head;
+    Node<T> *prv = nullptr;
+    while (cur) {
+
+      if (cur == node) {
+        return prv;
+      }
+
+      prv = cur;
+      cur = cur->next;
+    }
+    return nullptr;
+  }
+  void swapTailHead() {
+    Node<T> *cur = head;
+
+    Node<T> *prv = getPrv(tail);
+
+    tail->next = head->next;
+    prv->next = head;
+    head->next = nullptr;
+
+    std::swap(tail, head);
+  }
+  void leftRotate(int steps) {
+    if (steps == 0 || steps % size == 0) {
+      return;
+    }
+    if (size <= 1) {
+      return;
+    }
+    steps = steps % size;
+    Node<T> *nth = getNth(steps);
+    tail->next = head;
+    tail = nth;
+    head = nth->next;
+    tail->next = nullptr;
+  }
   void print() const {
     Node<T> *current = head;
     while (current) {

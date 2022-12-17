@@ -163,5 +163,9 @@ int main() {
   std::cout << "after reversing nodes....\n";
   toReverse2.reverseNodes();
   toReverse2.print();
+  std::cout << "***************test left rotate****************\n";
+  SingleLinkedList<int> toRotate{3, 5, 1, 2};
+  toRotate.swapTailHead();
+  toRotate.print();
   return 0;
 }
