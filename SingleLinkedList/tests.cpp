@@ -183,5 +183,12 @@ int main() {
   std::cout << "**********************find max************************\n";
   SingleLinkedList<int> findMax{1, 4, 8, 9, 50, 5000};
   std::cout << "max value is: " << findMax.max() << std::endl;
+  std::cout << "************************ods and evens*******************\n";
+  SingleLinkedList<int> odsAndEvens{1, 2, 3, 4, 5, 6, 7};
+  std::cout << "before change\n";
+  odsAndEvens.print();
+  odsAndEvens.collectOdsAndEvens();
+  std::cout << "after change\n";
+  odsAndEvens.print();
   return 0;
 }

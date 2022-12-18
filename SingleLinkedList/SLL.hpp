@@ -417,6 +417,23 @@ public:
 
     std::swap(tail, head);
   }
+  void collectOdsAndEvens() {
+    if (size <= 2) {
+      return;
+    }
+    Node<T> *firstEven = head->next;
+    Node<T> *curOd = head;
+    while (curOd->next && curOd->next->next) {
+      Node<T> *nextEven = curOd->next;
+      curOd->next = curOd->next->next;
+      nextEven->next = nextEven->next->next;
+      curOd = curOd->next;
+      if (size % 2 == 1) {
+        tail = nextEven;
+      }
+    }
+    curOd->next = firstEven;
+  }
   void leftRotate(int steps) {
     if (steps == 0 || steps % size == 0) {
       return;
