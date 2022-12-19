@@ -32,6 +32,11 @@ private:
     link(newNode, nodeAfter);
   }
 
+  void deleteNode(Node<T> *toDelete) {
+    delete toDelete;
+    size--;
+  }
+
 public:
   size_t getSize() const { return size; }
   DoublyLinkedList() : size(0), head(nullptr), tail(nullptr){};
@@ -73,6 +78,30 @@ public:
       head = cur;
     }
   }
+  void deleteFront() {
+    if (!head) {
+      return;
+    }
+    Node<T> *cur = head->next;
+    deleteNode(head);
+    head = cur;
+    if (head) {
+      head->prev = nullptr;
+    } else if (!size) {
+      tail = nullptr;
+    }
+  }
+
+  void deleteBack() {
+    if (!head) {
+      return;
+    }
+    Node<T> *prev = tail->prev;
+    deleteNode(tail);
+    tail = prev;
+    tail->next = nullptr;
+  }
+
   void insertEnd(T value) {
     Node<T> *item = new Node<T>{value};
     if (!head) {
@@ -83,6 +112,107 @@ public:
     }
     size++;
   }
+
+  bool isPalindrome() const {
+    Node<T> *cur1 = head;
+    Node<T> *cur2 = tail;
+    if (size == 1) {
+      return true;
+    }
+    while (cur2 && cur1) {
+
+      if (cur1->data != cur2->data) {
+        return false;
+      }
+
+      cur1 = cur1->next;
+      cur2 = cur2->prev;
+    }
+    return true;
+  }
+  void deleteEvenPositions() {
+    if (!head) {
+      return;
+    }
+    Node<T> *cur = head;
+    size_t tempIndex = 0;
+    while (cur) {
+
+      if (tempIndex % 2 == 0) {
+        if (cur == head) {
+          deleteFront();
+        } else if (cur == tail) {
+          deleteBack();
+          return;
+        } else {
+          Node<T> *prev = cur->prev;
+          Node<T> *next = cur->next;
+          prev->next = next;
+          next->prev = prev;
+          size--;
+          delete cur;
+        }
+      }
+
+      cur = cur->next;
+      tempIndex++;
+    }
+  }
+
+  void deleteAllNodesWithKey(T value) {
+    Node<T> *cur = head;
+    while (cur) {
+
+      if (cur->data == value) {
+        if (cur == head) {
+          deleteFront();
+          continue;
+        }
+        if (cur == tail) {
+          deleteBack();
+          return;
+        }
+        Node<T> *prev = cur->prev;
+        Node<T> *next = cur->next;
+        prev->next = cur->next;
+        next->prev = prev;
+        size--;
+        delete cur;
+      }
+
+      cur = cur->next;
+    }
+  }
+
+  void deleteAtIndex(size_t index) {
+    if (index == 0) {
+      deleteFront();
+      return;
+    }
+    if (index == size - 1) {
+      deleteBack();
+      return;
+    }
+    size_t curIndex = 0;
+    Node<T> *cur = head;
+    while (cur) {
+
+      if (curIndex == index) {
+        Node<T> *prev = cur->prev;
+        Node<T> *next = cur->next;
+        prev->next = cur->next;
+        next->prev = prev;
+
+        size--;
+        delete cur;
+        break;
+      }
+
+      curIndex++;
+      cur = cur->next;
+    }
+  }
+
   void printReverse() const {
     Node<T> *cur = tail;
     while (cur) {
