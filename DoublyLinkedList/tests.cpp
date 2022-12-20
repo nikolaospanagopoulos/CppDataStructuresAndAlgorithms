@@ -37,5 +37,18 @@ int main() {
 
   std::cout << "is palindrome: " << palindrome.isPalindrome() << std::endl;
 
+  std::cout << "******************find middle*****************\n";
+  DoublyLinkedList<int> findMiddleList{};
+  findMiddleList.insertEnd(1);
+  findMiddleList.insertEnd(2);
+  findMiddleList.insertEnd(3);
+  findMiddleList.insertEnd(4);
+  findMiddleList.insertEnd(5);
+  findMiddleList.insertEnd(6);
+  findMiddleList.insertEnd(7);
+  findMiddleList.insertEnd(8);
+  findMiddleList.insertEnd(9);
+
+  std::cout << "middle is: " << findMiddleList.findMiddle()->data << std::endl;
   return 0;
 }

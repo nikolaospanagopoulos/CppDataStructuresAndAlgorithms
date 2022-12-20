@@ -213,6 +213,16 @@ public:
     }
   }
 
+  Node<T> *findMiddle() {
+    Node<T> *slow = head;
+    Node<T> *fast = head;
+    while (fast && fast->next) {
+      fast = fast->next->next;
+      slow = slow->next;
+    }
+    return slow;
+  }
+
   void printReverse() const {
     Node<T> *cur = tail;
     while (cur) {
