@@ -34,5 +34,17 @@ int main() {
   int revershedNum = Stack<int>::reverseNum(2151);
   std::cout << "revershedNum: " << revershedNum << std::endl;
 
+  std::string paren{"({)})"};
+
+  bool isCorrect = Stack<char>::checkParentheses(paren);
+
+  std::cout << isCorrect << std::endl;
+
+  std::string text = "hellllllllllllllllllllllllllllo";
+
+  std::string noDupl = Stack<char>::removeDuplicates(text);
+
+  std::cout << noDupl << std::endl;
+
   return 0;
 }

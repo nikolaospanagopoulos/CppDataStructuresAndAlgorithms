@@ -20,6 +20,15 @@ template <typename T> class Stack {
       delete[] arr2;
     }
   }
+  static char getOpenMatch(char ch) {
+    if (ch == ')') {
+      return '(';
+    }
+    if (ch == ']') {
+      return '[';
+    }
+    return '{';
+  }
 
 public:
   static int reverseNum(int num) {
@@ -38,6 +47,36 @@ public:
       tens *= 10;
     }
     return num;
+  }
+
+  static std::string removeDuplicates(std::string toRemove) {
+    Stack<char> toAddChars{};
+    for (size_t i{}; i < toRemove.size(); i++) {
+      char ch = toRemove[i];
+      if (!toAddChars.isEmpty() && toAddChars.peek() == ch) {
+        toAddChars.pop();
+      } else {
+        toAddChars.push(ch);
+      }
+    }
+    std::string result{};
+    while (!toAddChars.isEmpty()) {
+      result = toAddChars.pop() + result;
+    }
+    return result;
+  }
+  static bool checkParentheses(std::string paren) {
+    Stack<char> parentheses{};
+    for (size_t i{}; i < paren.size(); i++) {
+      char ch = paren[i];
+      if (ch == '(' || ch == '[' || ch == '{') {
+        parentheses.push(ch);
+      } else if (parentheses.isEmpty() ||
+                 parentheses.pop() != Stack::getOpenMatch(ch)) {
+        return false;
+      }
+    }
+    return parentheses.isEmpty();
   }
   static std::string reverseWords(std::string line) {
     line += " ";
