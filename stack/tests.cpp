@@ -1,6 +1,18 @@
 #include "Stack.hpp"
 #include <iostream>
+std::string infixToPostfix(std::string &operation);
+void asteroidCollision(int *arr, int len);
 int main() {
+
+  std::string op{"(1+3)*5-8/2"};
+
+  std::string result = infixToPostfix(op);
+
+  std::cout << result << std::endl;
+
+  int arr[3] = {8, -8, 2};
+
+  asteroidCollision(arr, 3);
 
   Stack<int> myStack{};
   myStack.push(10);
@@ -47,4 +59,67 @@ int main() {
   std::cout << noDupl << std::endl;
 
   return 0;
+}
+
+void asteroidCollision(int *arr, int len) {
+  Stack<int> ast{};
+
+  for (int i{}; i < len; i++) {
+    int asteroid = arr[i];
+
+    bool isExploded = false;
+    while (!ast.isEmpty() && asteroid < 0 && ast.peek() > 0) {
+      if (ast.peek() < -asteroid) {
+        ast.pop();
+        continue;
+      } else if (ast.peek() == -asteroid) {
+        ast.pop();
+      }
+      isExploded = true;
+      break;
+    }
+    if (!isExploded) {
+      ast.push(asteroid);
+    }
+  }
+  ast.display();
+}
+
+int operatorPrecedence(char operatorCh) {
+  if (operatorCh == '+' || operatorCh == '-') {
+    return 1;
+  } else if (operatorCh == '*' || operatorCh == '/') {
+    return 2;
+  }
+  return 0;
+}
+
+std::string infixToPostfix(std::string &operation) {
+  std::string result{};
+  Stack<char> tokens{};
+  for (int i{}; i < operation.size(); i++) {
+    if (std::isdigit(operation[i])) {
+      result += operation[i];
+    } else if (operation[i] == '(') {
+      tokens.push(operation[i]);
+    } else if (operation[i] == ')') {
+      while (tokens.peek() != '(') {
+        std::cout << "i" << std::endl;
+        result += tokens.pop();
+      }
+      tokens.pop();
+
+    } else {
+
+      while (operatorPrecedence(operation[i]) <=
+             operatorPrecedence(tokens.peek())) {
+        result += tokens.pop();
+      }
+      tokens.push(operation[i]);
+    }
+  }
+  while (!tokens.isEmpty()) {
+    result += tokens.pop();
+  }
+  return result;
 }
