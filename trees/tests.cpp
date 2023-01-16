@@ -82,5 +82,12 @@ int main() {
   std::cout << mySearchTree.isBst() << std::endl;
   std::cout << "*************test find LCA***************\n";
   std::cout << mySearchTree.getLca(5, 8)->data << std::endl;
+  std::cout << "******************value exists*************\n";
+  std::cout << "value 5 exists: " << mySearchTree.valExists(5) << std::endl;
+  std::cout << "********************test BST creation********\n";
+  std::vector<int> values{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  BinarySearchTree<int> *myBstTree = mySearchTree.buildBst(values);
+  myBstTree->printByLevel();
+  delete myBstTree;
   return 0;
 }

@@ -26,6 +26,8 @@ public:
   }
 
   BinarySearchTree<T> *getLca(T x, T y) {
+    // if both are on the left || right continue left or right
+    // else return
     if (x < data && y < data) {
       return left->getLca(x, y);
     }
@@ -33,6 +35,29 @@ public:
       return right->getLca(x, y);
     }
     return this;
+  }
+
+  BinarySearchTree(T val) : data(val), left{nullptr}, right{nullptr} {}
+  BinarySearchTree(T val, BinarySearchTree<T> *leftPtr,
+                   BinarySearchTree<T> *rightPtr)
+      : data(val), left{leftPtr}, right{rightPtr} {}
+  BinarySearchTree<T> *buildBst(const std::vector<T> &values, int start = 0,
+                                int end = -10) {
+
+    if (end == -10) {
+      end = (int)values.size() - 1;
+    }
+    if (start > end) {
+      return nullptr;
+    }
+
+    int mid = (start + end) / 2;
+
+    BinarySearchTree<T> *left = buildBst(values, start, mid - 1);
+    BinarySearchTree<T> *right = buildBst(values, mid + 1, end);
+    BinarySearchTree<T> *root =
+        new BinarySearchTree<T>{values[mid], left, right};
+    return root;
   }
   bool isBst(int mn = INT32_MIN, int mx = INT32_MAX) const {
     bool status = mn < data && data < mx;
@@ -45,6 +70,16 @@ public:
     }
     bool isRightBst = !right || right->isBst(data, mx);
     return isRightBst;
+  }
+
+  bool valExists(T val) const {
+    if (val == data) {
+      return true;
+    }
+    if (val < data) {
+      return left && left->valExists(val);
+    }
+    return right && right->valExists(val);
   }
 
   BinarySearchTree<T> *searchNode(T target) {
@@ -63,7 +98,6 @@ public:
     return nullptr;
   }
 
-  BinarySearchTree(T val) : data(val), left{nullptr}, right{nullptr} {}
   ~BinarySearchTree() { clear(); }
   void clear() {
     if (left) {
