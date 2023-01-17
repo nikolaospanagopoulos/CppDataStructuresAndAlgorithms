@@ -89,5 +89,20 @@ int main() {
   BinarySearchTree<int> *myBstTree = mySearchTree.buildBst(values);
   myBstTree->printByLevel();
   delete myBstTree;
+  std::cout << "**************test min************************\n";
+
+  std::cout << "min value: " << mySearchTree.getMin() << std::endl;
+  std::cout << "************find ancestor***********************\n";
+  BinarySearchTree<int> testSTree{15};
+  testSTree.insert(6);
+  testSTree.insert(8);
+  testSTree.insert(10);
+  testSTree.insert(14);
+  testSTree.printByLevel();
+  std::pair<bool, int> resultSucccessor = testSTree.successor(14);
+
+  std::cout << "successor exists: " << resultSucccessor.first
+            << ", successor is: " << resultSucccessor.second << std::endl;
+
   return 0;
 }

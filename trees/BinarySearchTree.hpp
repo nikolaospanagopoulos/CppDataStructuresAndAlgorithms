@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <iostream>
 #include <queue>
+#include <utility>
 #include <vector>
 template <typename T> class BinarySearchTree {
 public:
@@ -35,6 +36,14 @@ public:
       return right->getLca(x, y);
     }
     return this;
+  }
+
+  T getMin() {
+    BinarySearchTree<T> *cur = this;
+    while (cur && cur->left) {
+      cur = cur->left;
+    }
+    return cur->data;
   }
 
   BinarySearchTree(T val) : data(val), left{nullptr}, right{nullptr} {}
@@ -130,5 +139,46 @@ public:
       level++;
       std::cout << '\n';
     }
+  }
+  std::pair<bool, T> successor(T target) {
+    std::vector<BinarySearchTree<T> *> ancestors{};
+    if (!findChain(ancestors, target)) {
+      return std::make_pair(false, -1); // not found
+    }
+    BinarySearchTree<T> *child = getNext(ancestors);
+    if (child->right) { // we have right so ancestor is the smallest of right
+                        // tree
+      return std::make_pair(true, child->right->getMin());
+    }
+    BinarySearchTree<T> *parent =
+        getNext(ancestors); // take previous node (parent)
+    while (parent && parent->right == child) {
+      child = parent;
+      parent = getNext(ancestors);
+    }
+    if (parent) {
+      return std::make_pair(true, parent->data);
+    }
+    return std::make_pair(false, -1);
+  }
+
+private:
+  bool findChain(std::vector<BinarySearchTree<T> *> &ancestors, T target) {
+    ancestors.push_back(this);
+    if (target == data) {
+      return true;
+    }
+    if (target < data) {
+      return left && left->findChain(ancestors, target);
+    }
+    return right && right->findChain(ancestors, target);
+  }
+  BinarySearchTree<T> *getNext(std::vector<BinarySearchTree<T> *> &ancestors) {
+    if (ancestors.size() == 0) {
+      return nullptr;
+    }
+    BinarySearchTree<T> *node = ancestors.back();
+    ancestors.pop_back();
+    return node;
   }
 };
