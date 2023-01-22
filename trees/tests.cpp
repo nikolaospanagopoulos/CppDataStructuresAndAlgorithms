@@ -103,6 +103,16 @@ int main() {
 
   std::cout << "successor exists: " << resultSucccessor.first
             << ", successor is: " << resultSucccessor.second << std::endl;
-
+  // testSTree.deleteValue(14);
+  testSTree.printByLevel();
+  std::cout << "test successorQueries \n";
+  std::vector<int> answers;
+  std::vector<int> traversal;
+  std::deque<int> queries{14};
+  testSTree.successorQueries(queries, answers, traversal);
+  std::cout << "answer: \n";
+  for (auto &i : answers) {
+    std::cout << i << std::endl;
+  }
   return 0;
 }

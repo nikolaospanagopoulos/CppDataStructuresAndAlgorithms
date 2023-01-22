@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <deque>
 #include <iostream>
 #include <queue>
 #include <utility>
@@ -9,7 +10,29 @@ public:
   T data;
   BinarySearchTree<T> *left;
   BinarySearchTree<T> *right;
-
+  void successorQueries(std::deque<T> &queries, std::vector<T> &answer,
+                        std::vector<T> &traversal) {
+    if (queries.empty()) {
+      return;
+    }
+    if (left && queries.front() < data) {
+      left->successorQueries(queries, answer, traversal);
+      if (queries.empty()) {
+        return;
+      }
+    }
+    if (!traversal.empty() && traversal.back() == queries.front()) {
+      answer.push_back(data);
+      queries.pop_front();
+      if (queries.empty()) {
+        return;
+      }
+    }
+    traversal.push_back(data);
+    if (right && queries.front() >= data) {
+      right->successorQueries(queries, answer, traversal);
+    }
+  }
   void insert(T target) {
     if (target < data) {
       if (!left) {
@@ -161,8 +184,49 @@ public:
     }
     return std::make_pair(false, -1);
   }
+  BinarySearchTree<T> *minNode() {
+    BinarySearchTree<T> *cur = this;
+    while (cur && cur->left) {
+      cur = cur->left;
+    }
+    return cur;
+  }
+  void deleteValue(T value) {
+    if (value == data && !left && !right) {
+      return;
+    }
+    deleteNode(value, this);
+  }
 
 private:
+  BinarySearchTree<T> *deleteNode(T value, BinarySearchTree<T> *node) {
+    if (!node) {
+      return nullptr;
+    }
+    if (value < node->data) {
+      node->left = deleteNode(value, node->left);
+    } else if (value > node->data) {
+      node->right = deleteNode(value, node->right);
+    } else {
+      BinarySearchTree<T> *tmp = node;
+      if (!node->left && !node->right) {
+        node = nullptr;
+      } else if (!node->right) {
+        node = node->left;
+      } else if (!node->left) {
+        node = node->right;
+      } else {
+        BinarySearchTree<T> *min = node->right->minNode();
+        node->data = min->data;
+        node->right = deleteNode(node->data, node->right);
+        tmp = nullptr;
+      }
+      if (tmp) {
+        delete tmp;
+      }
+    }
+    return node;
+  }
   bool findChain(std::vector<BinarySearchTree<T> *> &ancestors, T target) {
     ancestors.push_back(this);
     if (target == data) {
