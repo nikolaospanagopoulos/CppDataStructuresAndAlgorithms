@@ -34,7 +34,8 @@ private:
     if (childPosition == -1) {
       return;
     }
-    if (childPosition != -1 && arr[rightChildPosition] < arr[childPosition]) {
+    if (rightChildPosition != -1 &&
+        arr[rightChildPosition] < arr[childPosition]) {
       childPosition = rightChildPosition;
     }
     if (arr[parentPosition] > arr[childPosition]) {
@@ -49,12 +50,6 @@ private:
   }
 
 public:
-  T *top() {
-    if (isEmpty()) {
-      return nullptr;
-    }
-    return &arr[0];
-  }
   void pop() {
     if (isEmpty()) {
       std::cout << "array is empty \n";
@@ -65,10 +60,11 @@ public:
   }
   bool isEmpty() const { return size == 0 ? true : false; }
   int getSize() const { return size; }
-  T top() const {
-    if (!isEmpty()) {
-      return arr[0];
+  T *top() {
+    if (isEmpty()) {
+      return nullptr;
     }
+    return &arr[0];
   }
   int parent(int index) const { return index == 0 ? -1 : (index - 1) / 2; }
   int left(int index) const {
